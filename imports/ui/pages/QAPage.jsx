@@ -1,10 +1,13 @@
+// React Imports:
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 
-import { Badge } from 'react-materialize';
+// Material UI Imports:
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 // Import Child Components to this Component.
+import NavComponent from '../components/NavComponent.jsx';
 import QAPost from '../components/QAPost.jsx';
 
 // Import used collections:
@@ -42,34 +45,41 @@ class QAPage extends Component {
     Meteor.call('questions.insert', text);
 
     // Notify the user that the question has been received for review!
-    Materialize.toast("Your question has been received! After review, I will answer it shortly!", 12000, "green");
+    var toastHTML =
+      '<img style="width: 50px; height:50px;" src="https://yt3.ggpht.com/a-/AJLlDp3fBviBJtLPp4a5JjTd2DoYfveKIImr9SK0UA=s900-mo-c-c0xffffffff-rj-k-no" class="circle"/> '+
+      '<span class="black-text hide-on-small-only" style="margin-left: 15px;">Your question has been received! <br/> After review, I will answer it shortly!</span>'+
+      '<span class="black-text hide-on-med-and-up">Your question has been received! <br/> After review, I will answer it shortly!</span>';
+    //Materialize.toast(toastHTML, 12000, "white");
 
     // Clear form
     ReactDOM.findDOMNode(this.refs.textInput).value = '';
   }
-
+/**
+**            <Badge className="badge new light-blue hide-on-small-only" data-badge-caption="Answered Questions">
+              {this.props.count}&nbsp;
+            </Badge>
+*/
   render() {
     return (
-      /* QAPage Content */
-      <div className="container">
+      <MuiThemeProvider>
+
+        <NavComponent/>
+
         <header>
           <h3>
             Ask Me Anything!
-            <Badge className="badge new light-blue hide-on-small-only" data-badge-caption="Answered Questions">
-              {this.props.count}&nbsp;
-            </Badge>
+
           </h3>
 
           <form className="new-question" onSubmit={this.handleSubmit.bind(this)} >
             <input type="text" ref="textInput" placeholder="Ask a question..."/>
-
           </form>
         </header>
 
         <ul>
           {this.renderQAPosts()}
         </ul>
-      </div>
+      </MuiThemeProvider>
     );
   }
 }

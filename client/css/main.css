@@ -17,8 +17,12 @@ body {
   font-size: 14px;
 }
 
-h1, h2, h3, nav li {
+h1, h2, h3, nav li, .sidenav li {
   font-family: "Oswald", sans-serif;
+}
+
+.sidenav .fa {
+  font-size: 22px;
 }
 
 .badge { font-family: sans-serif; }

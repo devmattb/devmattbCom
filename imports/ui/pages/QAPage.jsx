@@ -3,9 +3,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 
-// Material UI Imports:
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
+import Materialize from 'materialize-css';
 // Import Child Components to this Component.
 import NavComponent from '../components/NavComponent.jsx';
 import QAPost from '../components/QAPost.jsx';
@@ -15,6 +13,11 @@ import "../../api/collections/questions/questions.js"
 
 // QAPage Page Component
 class QAPage extends Component {
+
+  componentDidMount(){
+    $('.sidenav').sidenav();
+    $('.dropdown-trigger').dropdown();
+  }
 
   /**
   *  Manipulate the questions array prop in to an
@@ -49,7 +52,7 @@ class QAPage extends Component {
       '<img style="width: 50px; height:50px;" src="https://yt3.ggpht.com/a-/AJLlDp3fBviBJtLPp4a5JjTd2DoYfveKIImr9SK0UA=s900-mo-c-c0xffffffff-rj-k-no" class="circle"/> '+
       '<span class="black-text hide-on-small-only" style="margin-left: 15px;">Your question has been received! <br/> After review, I will answer it shortly!</span>'+
       '<span class="black-text hide-on-med-and-up">Your question has been received! <br/> After review, I will answer it shortly!</span>';
-    //Materialize.toast(toastHTML, 12000, "white");
+    Materialize.toast(toastHTML, 12000, "white");
 
     // Clear form
     ReactDOM.findDOMNode(this.refs.textInput).value = '';
@@ -61,7 +64,7 @@ class QAPage extends Component {
 */
   render() {
     return (
-      <MuiThemeProvider>
+      <div className="container">
 
         <NavComponent/>
 
@@ -79,7 +82,7 @@ class QAPage extends Component {
         <ul>
           {this.renderQAPosts()}
         </ul>
-      </MuiThemeProvider>
+      </div>
     );
   }
 }

@@ -9,6 +9,7 @@
     "@material-ui/core": "^1.2.0",
     "history": "^4.7.2",
     "material-ui": "^0.20.1",
+    "materialize-css": "^1.0.0-rc.1",
     "meteor-node-stubs": "^0.3.2",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",

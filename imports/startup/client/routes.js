@@ -4,6 +4,8 @@ import createBrowserHistory from 'history/createBrowserHistory';
 
 // Import Pages
 import QAPage from '../../ui/pages/QAPage.jsx';
+import QAAdminPage from '../../ui/pages/QAAdminPage.jsx';
+import SharedQuestionPage from '../../ui/pages/SharedQuestionPage.jsx';
 
 const browserHistory = createBrowserHistory();
 
@@ -14,6 +16,8 @@ export const renderRoutes = () => (
   <Router history={browserHistory}>
     <Switch>
       <Route exact path="/" component={QAPage}/>
+      <Route exact path="/:id" component={SharedQuestionPage}/>
+      <Route exact path="/qaadmin" component={QAAdminPage}/>
     </Switch>
   </Router>
 );

@@ -14,9 +14,25 @@ import "../../api/collections/questions/questions.js"
 // QAPage Page Component
 class QAPage extends Component {
 
-  componentDidMount(){
-    $('.sidenav').sidenav();
-    $('.dropdown-trigger').dropdown();
+  constructor(props){
+    super(props);
+
+    // Method binds
+    this.toggleRecent = this.toggleRecent.bind(this);
+    this.toggleFAQ = this.toggleFAQ.bind(this);
+    this.toggleTAQ = this.toggleTAQ.bind(this);
+
+    // UI States:
+    this.state = {
+      showRecent: true,
+      showFAQ: false,
+      showTAQ: false
+    }
+  }
+
+  componentDidMount() {
+    // Enable QAPost icon tooltips
+    $('.tooltipped').tooltip();
   }
 
   /**
@@ -25,11 +41,18 @@ class QAPage extends Component {
   *  information as "props".
   **/
   renderQAPosts() {
-    // Only show answered questions:
-    let ansQuestions = this.props.questions;
-    ansQuestions = ansQuestions.filter(question => question.answered);
+    // By default only recently answered questions.
+    let targetQuestions = this.props.questions;
+    if (this.state.showRecent) {
+      targetQuestions = targetQuestions.filter( question => !question.pinned );
+    } else if (this.state.showFAQ) {
+      targetQuestions = targetQuestions.filter( question => question.pinned );
+    } else if (this.state.showTAQ) {
+      // TODO: FIXXX
+      targetQuestions = targetQuestions.filter( question => question.likes >= 5 );
+    }
 
-    return ansQuestions.map((question) => (
+    return targetQuestions.map((question) => (
       <QAPost key={question._id} question={question} />
     ));
   }
@@ -52,16 +75,24 @@ class QAPage extends Component {
       '<img style="width: 50px; height:50px;" src="https://yt3.ggpht.com/a-/AJLlDp3fBviBJtLPp4a5JjTd2DoYfveKIImr9SK0UA=s900-mo-c-c0xffffffff-rj-k-no" class="circle"/> '+
       '<span class="black-text hide-on-small-only" style="margin-left: 15px;">Your question has been received! <br/> After review, I will answer it shortly!</span>'+
       '<span class="black-text hide-on-med-and-up">Your question has been received! <br/> After review, I will answer it shortly!</span>';
-    Materialize.toast(toastHTML, 12000, "white");
+    Materialize.toast({html: toastHTML, classes: 'white'}, 12000);
 
     // Clear form
     ReactDOM.findDOMNode(this.refs.textInput).value = '';
   }
-/**
-**            <Badge className="badge new light-blue hide-on-small-only" data-badge-caption="Answered Questions">
-              {this.props.count}&nbsp;
-            </Badge>
-*/
+
+  toggleRecent() {
+    this.setState({ showRecent: true, showFAQ: false, showTAQ: false });
+  }
+
+  toggleFAQ() {
+    this.setState({ showRecent: false, showFAQ: true, showTAQ: false });
+  }
+
+  toggleTAQ() {
+    this.setState({ showRecent: false, showFAQ: false, showTAQ: true });
+  }
+
   render() {
     return (
       <div className="container">
@@ -71,7 +102,33 @@ class QAPage extends Component {
         <header>
           <h3>
             Ask Me Anything!
-
+            <span className="badge new green hide-on-small-only" data-badge-caption="Answered Questions">
+              {this.props.count}&nbsp;
+            </span>
+            <br/>
+            <form className="filter-questions" onSubmit={this.filterForm} >
+              <label style={{marginLeft: "5px"}}>
+                <input
+                  className="filled-in" checked={this.state.showRecent} ref="toggleRecent" type="checkbox"
+                  onClick={this.toggleRecent}
+                />
+                <span>RECENT</span>
+              </label>
+              <label>
+                <input
+                  className="filled-in" checked={this.state.showFAQ} ref="toggleFaq" type="checkbox"
+                  onClick={this.toggleFAQ}
+                />
+                <span>FAQ</span>
+              </label>
+              <label>
+                <input
+                  className="filled-in" checked={this.state.showTAQ} ref="toggleTaq" type="checkbox"
+                  onClick={this.toggleTAQ}
+                />
+                <span>Top Questions</span>
+              </label>
+            </form>
           </h3>
 
           <form className="new-question" onSubmit={this.handleSubmit.bind(this)} >
@@ -102,8 +159,8 @@ export default withTracker(() => {
 
   // Set some props of the QAPage Component:
   return {
-    // Find/Return the most recent questions first.
-    questions: Questions.find({}, { sort: { createdAt: -1 } } ).fetch(),
-    count: Questions.find({answered: true}).count(),
+    // Find/Return the most recent questions first, and only those which are answered.
+    questions: Questions.find({answer: {$exists:true}}, { sort: { createdAt: -1 } } ).fetch(),
+    count: Questions.find({answer: {$exists:true}}).count(),
   };
 })(QAPage);

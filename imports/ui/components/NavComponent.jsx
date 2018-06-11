@@ -3,6 +3,11 @@ import React, { Component } from 'react';
 // Navbar component - represents our navbar
 export default class NavComponent extends Component {
 
+  componentDidMount(){
+    $('.sidenav').sidenav();
+    $('.dropdown-trigger').dropdown();
+  }
+
   render() {
     return (
       <div>
@@ -20,18 +25,15 @@ export default class NavComponent extends Component {
             </a>
             <a href="#" data-target="slide-out" className="sidenav-trigger right"><i className="material-icons">menu</i></a>
             <ul className="right hide-on-med-and-down black" id="desktop-demo">
-              <li id="homeNavItem"><a href="/">HOME</a></li>
-              <li id="flowNavItem"><a href="/case">CASE</a></li>
-              <li id="projectNavItem"><a href="/videos">VIDEOS</a></li>
-              <li id="reflectionNavItem"><a className='dropdown-trigger' href='#' data-target='dropdown1'>MORE<i className="material-icons right">arrow_drop_down</i></a></li>
-              <ul id='dropdown1' className='dropdown-content'>
-                <li><a href="#!">FAQ</a></li>
-                <li className="divider hide-on-med-and-down" tabIndex="-1"></li>
-                <li><a href="#!">ASK ME!</a></li>
-                <li className="divider hide-on-med-and-down" tabIndex="-1"></li>
-                <li><a href="#!">FLOW</a></li>
-                <li className="divider hide-on-med-and-down" tabIndex="-1"></li>
-                <li><a href="#!">CONTACT</a></li>
+              <li><a href="/">HOME</a></li>
+              <li><a href="/case">CASE</a></li>
+              <li><a href="/videos">VIDEOS</a></li>
+              <li><a href="/newsletter">NEWSLETTER</a></li>
+              <li><a className='dropdown-trigger' href='#' data-target='dropdownDesktop'>MORE<i className="material-icons right">arrow_drop_down</i></a></li>
+              <ul id='dropdownDesktop' className='dropdown-content'>
+                <li className="black"><a className="white-text" href="#!">ASK ME!</a></li>
+                <li className="black"><a className="white-text" href="#!">FLOW</a></li>
+                <li className="black"><a className="white-text" href="#!">CONTACT</a></li>
               </ul>
             </ul>
 
@@ -43,28 +45,54 @@ export default class NavComponent extends Component {
       <ul id="slide-out" className="sidenav">
         <li>
             <a href="/">
-                <i className="fa fa-home webTextOrange" aria-hidden="true"></i>
+                <i className="fa fa-home webTextRed" aria-hidden="true"></i>
                 HOME
             </a>
         </li>
         <li>
             <a href="/case">
-                <i className="fa fa-star webTextOrange" aria-hidden="true"></i>
+                <i className="fa fa-briefcase webTextRed" aria-hidden="true"></i>
                 CASE
             </a>
         </li>
         <li>
             <a href="/videos">
-                <i className="fa fa-laptop webTextOrange" aria-hidden="true"></i>
+                <i className="fa fa-youtube webTextRed" aria-hidden="true"></i>
                 VIDEOS
+            </a>
+        </li>
+        <li>
+            <a href="/videos">
+                <i className="fa fa-paper-plane webTextRed" aria-hidden="true"></i>
+                NEWSLETTER
             </a>
         </li>
         <li><a className='dropdown-trigger' href='#' data-target='dropdown2'>MORE <i className="material-icons right">arrow_drop_down</i></a></li>
         <ul id='dropdown2' className='dropdown-content'>
-          <li><a href="#!">FAQ</a></li>
-          <li><a href="#!">ASK ME!</a></li>
-          <li><a href="#!">FLOW</a></li>
-          <li><a href="#!">CONTACT</a></li>
+          <li>
+            <a href="#!">
+            <i className="fa fa-question webTextRed" aria-hidden="true"></i>
+            FAQ & TAQ
+            </a>
+          </li>
+          <li>
+            <a href="#!">
+              <i className="fa fa-user webTextRed" aria-hidden="true"></i>
+              ASK ME!
+            </a>
+          </li>
+          <li>
+            <a href="#!">
+              <i className="fa fa-star webTextRed" aria-hidden="true"></i>
+              FLOW
+            </a>
+          </li>
+          <li>
+            <a href="#!">
+              <i className="fa fa-envelope webTextRed" aria-hidden="true"></i>
+              CONTACT
+            </a>
+          </li>
         </ul>
       </ul>
 
